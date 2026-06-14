@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luisa Espinosa — Creative Producer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --yellow: #d4f000;
+  --black: #1a1a1a;
+  --white: #f0f0f0;
+  --gray: #999;
+  --font: 'Kumbh Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font);
+  font-weight: 400;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* MAX WIDTH WRAPPER */
+#page-home > *:not(.marquee-wrap),
+#page-project,
+#page-about {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+nav .nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* NAV */
+nav {
+  background: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5vw;
+  height: 46px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+}
+.nav-logo {
+  font-weight: 300; font-size: 0.72rem;
+  letter-spacing: 0.12em; color: var(--black);
+  text-transform: uppercase; cursor: pointer;
+}
+.nav-center { display: flex; gap: 2.5rem; }
+.nav-center a, .nav-right a {
+  font-weight: 300; font-size: 0.72rem;
+  color: var(--black); letter-spacing: 0.05em;
+  transition: opacity 0.2s;
+}
+.nav-center a:hover, .nav-right a:hover { opacity: 0.5; }
+.nav-right { display: flex; align-items: center; gap: 1.5rem; }
+.nav-icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; }
+.nav-icon svg { width: 16px; height: 16px; fill: var(--black); }
+
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 28px; height: 20px; position: relative;
+}
+.nav-hamburger span {
+  display: block; width: 100%; height: 2px;
+  background: var(--black); position: absolute; left: 0;
+}
+.nav-hamburger span:nth-child(1) { top: 0; }
+.nav-hamburger span:nth-child(2) { top: 9px; }
+.nav-hamburger span:nth-child(3) { top: 18px; }
+
+.mobile-menu {
+  display: none; position: fixed;
+  top: 46px; left: 0; right: 0; bottom: 0;
+  background: var(--yellow); z-index: 999;
+  flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-weight: 700; font-size: 1.5rem;
+  color: var(--black); text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* GRAIN TEXTURE */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* HERO */
+.hero {
+  min-height: 65vh;
+  display: flex;
+  align-items: center;
+  padding: 46px 0 0;
+  overflow: hidden;
+}
+.hero-left {
+  padding: 3rem 5vw;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 1400px;
+  width: 100%;
+}
+.hero-name-thin {
+  font-weight: 200;
+  font-size: clamp(4rem, 8.5vw, 10rem);
+  line-height: 0.88; letter-spacing: 0.02em;
+  text-transform: uppercase; color: var(--white);
+  display: block;
+}
+.hero-name-black {
+  font-weight: 900;
+  font-size: clamp(4rem, 8.5vw, 10rem);
+  line-height: 0.88; letter-spacing: -0.04em;
+  text-transform: uppercase; color: var(--white);
+  display: block;
+}
+.hero-subtitle {
+  font-weight: 300;
+  font-size: 0.8rem; letter-spacing: 0.08em;
+  color: rgba(240,240,240,0.4); margin-top: 2rem;
+  text-transform: uppercase;
+}
+.hero-right {
+  height: 80vh;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-right img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+}
+.hero-polaroid-wrap {
+  width: 100%; height: 100%;
+  background: #111;
+  display: flex; align-items: center; justify-content: center;
+}
+.polaroid {
+  display: inline-flex; flex-direction: column;
+  background: #e8e8e0; padding: 0.5rem 0.5rem 1.6rem;
+  transform: rotate(2deg); flex-shrink: 0;
+  transition: transform 0.4s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.05); }
+.polaroid-inner {
+  width: clamp(180px, 22vw, 320px);
+  height: clamp(215px, 27vw, 390px);
+  background: #aaa; overflow: hidden; position: relative;
+}
+.polaroid-inner img,
+.polaroid-inner video {
+  width: 100%; height: 100%; object-fit: cover; display: none;
+}
+.polaroid-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: #777;
+}
+.polaroid input[type="file"] { display: none; }
+
+/* Content section uses vertical thumbs */
+#gallery-content .gallery-thumb { aspect-ratio: 9/16; }
+
+/* MARQUEE - full width, outside max-width constraint */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0.9rem 0;
+  background: #AF7AE6;
+}
+.marquee-track {
+  display: flex; width: max-content;
+  animation: marquee 22s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-item {
+  display: flex; align-items: center; gap: 2.5rem;
+  padding: 0 2.5rem;
+  font-weight: 500; font-size: 0.7rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #1a1a1a; white-space: nowrap;
+}
+.marquee-dot {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(0,0,0,0.3); flex-shrink: 0;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); }
+.section-header { padding: 2.5rem 5vw 1.5rem; }
+.section-title {
+  font-weight: 900; font-size: 1rem;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--white);
+}
+
+/* GALLERY */
+.gallery {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem; padding: 0 5vw 5rem;
+}
+.gallery-item { position: relative; cursor: pointer; overflow: hidden; border-radius: 6px; }
+.gallery-thumb {
+  width: 100%; aspect-ratio: 16/10;
+  background: #111; overflow: hidden; position: relative;
+}
+.gallery-thumb video,
+.gallery-thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; transition: transform 0.6s ease;
+}
+.gallery-item:hover .gallery-thumb video,
+.gallery-item:hover .gallery-thumb img { transform: scale(1.04); }
+
+.thumb-placeholder {
+  width: 100%; height: 100%; position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.5rem;
+  background: #151515;
+}
+.thumb-placeholder-plus {
+  width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: rgba(255,255,255,0.25); transition: all 0.3s;
+}
+.gallery-item:hover .thumb-placeholder-plus { border-color: var(--yellow); color: var(--yellow); }
+.thumb-placeholder-label {
+  font-size: 0.55rem; letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.2); text-transform: uppercase;
+}
+.thumb-watermark {
+  position: absolute; bottom: 1rem; left: 1rem;
+  font-weight: 900; font-size: clamp(1.5rem, 3vw, 3.5rem);
+  text-transform: uppercase; letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.04);
+  pointer-events: none; user-select: none; line-height: 1;
+}
+.gallery-overlay {
+  display: none;
+}
+.gallery-item:hover .gallery-overlay { opacity: 0; }
+.gallery-info {
+  padding: 0.8rem 0 0.3rem;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  cursor: pointer;
+}
+.gallery-name {
+  font-weight: 700; font-size: 0.78rem;
+  text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 0.15rem;
+  transition: color 0.2s;
+}
+.gallery-item:hover .gallery-name { color: var(--yellow); }
+.gallery-client {
+  font-weight: 300; font-size: 0.58rem;
+  letter-spacing: 0.04em; color: rgba(240,240,240,0.35);
+  margin-bottom: 0.2rem;
+}
+.gallery-tags {
+  font-weight: 400; font-size: 0.58rem;
+  letter-spacing: 0.02em; color: var(--gray);
+}
+.gallery-year { font-size: 0.58rem; color: var(--yellow); letter-spacing: 0.02em; font-weight: 500; }
+
+/* PAGES */
+.page { display: none; }
+.page.active { display: block; }
+
+/* BACK */
+.back-bar { padding: 0.8rem 5vw; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.back-btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font); font-weight: 700; font-size: 0.6rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--yellow);
+  background: none; border: none; cursor: pointer; transition: gap 0.2s;
+}
+.back-btn:hover { gap: 1rem; }
+
+/* PROJECT HERO */
+.proj-hero { padding: 1.5rem 5vw 0; overflow: hidden; }
+.proj-title-row {
+  display: flex; align-items: baseline;
+  justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+.proj-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 10vw, 10rem);
+  line-height: 0.88; letter-spacing: -0.01em;
+  text-transform: uppercase; color: var(--white);
+}
+.proj-season {
+  font-weight: 400; font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.6rem);
+  color: var(--gray); white-space: nowrap; flex-shrink: 0;
+}
+
+/* PROJECT MAIN MEDIA */
+.proj-main-media { display: flex; justify-content: center; padding: 3rem 2.5rem 2.5rem; }
+.proj-main-slot {
+  width: 45%; max-width: 480px; aspect-ratio: 3/4;
+  background: #111; position: relative; overflow: hidden;
+  border-radius: 8px;
+}
+.proj-main-slot video,
+.proj-main-slot img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.proj-main-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.7rem;
+  border: 1px dashed rgba(255,255,255,0.12);
+}
+.proj-main-placeholder span:first-child { font-size: 1.5rem; color: rgba(255,255,255,0.2); }
+.proj-main-placeholder span:last-child {
+  font-size: 0.55rem; letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.18); text-transform: uppercase;
+}
+
+/* PROJECT TEXT */
+.proj-text {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; padding: 2.5rem 8vw 3rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  align-items: start;
+}
+.proj-text-col {
+  display: flex; flex-direction: column;
+}
+.proj-text-col h3 {
+  font-weight: 700; font-size: 0.75rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--yellow); margin-bottom: 1rem;
+}
+.proj-text-col p {
+  font-size: 1.05rem; line-height: 1.8;
+  color: rgba(240,240,240,0.6);
+}
+.proj-text-col.lang-en p {
+  font-size: 0.78rem; line-height: 1.8;
+  color: rgba(240,240,240,0.45);
+}
+
+/* PROJECT GALLERY */
+.proj-gallery {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem; padding: 0 5vw 4rem;
+}
+.proj-gallery-slot {
+  aspect-ratio: 9/16; background: #111;
+  position: relative; overflow: hidden;
+  border-radius: 6px;
+}
+.proj-gallery-slot video,
+.proj-gallery-slot img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.proj-gallery-placeholder {
+  width: 100%; height: 100%; position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.5rem;
+  border: 1px dashed rgba(255,255,255,0.08);
+}
+.proj-gallery-placeholder span:first-child { font-size: 1.2rem; color: rgba(255,255,255,0.15); }
+.proj-gallery-placeholder span:last-child {
+  font-size: 0.5rem; letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.15); text-transform: uppercase;
+}
+
+/* ABOUT */
+.about-content { max-width: 780px; margin: 0 auto; padding: 5rem 2.5rem 4rem; }
+.about-headline {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700; font-size: clamp(2rem, 5vw, 3.8rem);
+  text-transform: none; letter-spacing: -0.02em;
+  line-height: 1.05; margin-bottom: 3rem;
+}
+.about-headline span { color: var(--yellow); }
+.about-body { font-size: 1.05rem; line-height: 1.85; color: rgba(240,240,240,0.6); margin-bottom: 1.5rem; }
+.about-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 3rem; }
+.about-tag {
+  font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 700; color: var(--black); background: var(--yellow); padding: 0.4rem 1rem;
+}
+
+/* CONTACT */
+.contact-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 60vh;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.contact-left {
+  padding: 4rem 5vw;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+}
+.contact-label {
+  font-weight: 300; font-size: 0.65rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,240,240,0.35);
+  margin-bottom: 1.5rem;
+}
+.contact-cta {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 5.5rem);
+  letter-spacing: -0.03em; line-height: 0.92;
+  color: var(--white); text-transform: none;
+  margin-bottom: 3rem;
+}
+.contact-email-wrap {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.contact-email-label {
+  font-weight: 300; font-size: 0.6rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,240,240,0.35);
+}
+.contact-email {
+  font-weight: 700;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  letter-spacing: -0.01em;
+  color: var(--yellow);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.contact-email:hover { opacity: 0.6; }
+.contact-right {
+  position: relative; overflow: hidden;
+  background: #111;
+  display: flex; align-items: flex-end;
+  padding: 2.5rem;
+}
+.contact-right-inner {
+  font-weight: 900;
+  font-size: clamp(3rem, 6vw, 7rem);
+  letter-spacing: -0.04em; line-height: 0.88;
+  color: rgba(255,255,255,0.04);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* CONTENT GALLERY */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  padding: 0 5vw 5rem;
+}
+.content-item {
+  position: relative;
+  aspect-ratio: 9/16;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #111;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+}
+.content-item img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+.content-item:hover img { transform: scale(1.04); }
+.content-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.35);
+  opacity: 0; transition: opacity 0.3s;
+}
+.content-item:hover .content-overlay { opacity: 1; }
+.content-platform {
+  font-family: var(--font);
+  font-weight: 700; font-size: 0.65rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--white); background: rgba(0,0,0,0.6);
+  padding: 0.4rem 0.8rem; border-radius: 20px;
+}
+
+
+.gallery-thumb iframe,
+.proj-main-slot iframe,
+.proj-gallery-slot iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+
+/* ABOUT INTEGRATED */
+.about-integrated {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  align-items: stretch;
+}
+.about-integrated-left {
+  padding: 2.5rem 5vw;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.about-main-photo {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #111;
+  flex-shrink: 0;
+}
+.about-main-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+  filter: grayscale(20%);
+  transition: filter 0.4s;
+}
+.about-main-photo img:hover { filter: grayscale(0%); }
+.about-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.about-thumb {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: #111;
+  cursor: pointer;
+}
+.about-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+  filter: grayscale(30%);
+  transition: filter 0.4s, transform 0.4s;
+}
+.about-thumb img:hover { filter: grayscale(0%); transform: scale(1.05); }
+.about-integrated-right {
+  padding: 2.5rem 5vw;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+.about-integrated-label {
+  font-weight: 300; font-size: 0.65rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(240,240,240,0.3);
+  margin-bottom: 2rem;
+}
+.about-integrated-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  letter-spacing: -0.02em; line-height: 1;
+  color: var(--white);
+  margin-bottom: 2.5rem;
+}
+.about-integrated-body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(240,240,240,0.6);
+  margin-bottom: 1.2rem;
+}
+.about-integrated-en {
+  font-size: 0.72rem;
+  line-height: 1.75;
+  color: rgba(240,240,240,0.25);
+  font-style: italic;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+
+footer {
+  padding: 1.5rem 5vw; display: flex;
+  justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 1rem;
+}
+.footer-copy { font-size: 0.6rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.2); text-transform: none; }
+.footer-badge { font-size: 0.55rem; letter-spacing: 0.08em; color: var(--yellow); text-transform: uppercase; font-weight: 700; opacity: 0.5; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 0 1.2rem; }
+  .nav-center, .nav-right { display: none; }
+  .nav-hamburger { display: block; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 6rem 1.2rem 2rem; }
+  .hero-right { height: 50vw; }
+  .section-header { padding: 2.5rem 1.2rem 1.5rem; }
+  .gallery { grid-template-columns: repeat(2, 1fr); padding: 0 1.2rem 3rem; }
+  .content-grid { grid-template-columns: repeat(2, 1fr); padding: 0 1.2rem 3rem; }
+  .proj-hero { padding: 1rem 1.2rem 0; }
+  .proj-text { grid-template-columns: 1fr; padding: 2rem 1.2rem; }
+  .proj-gallery { grid-template-columns: repeat(2, 1fr); }
+  .proj-main-slot { width: 85%; }
+  .about-integrated { grid-template-columns: 1fr; }
+  .about-integrated-right { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding: 2.5rem 1.2rem; }
+  .about-integrated-left { padding: 2.5rem 1.2rem; }
+  .contact-bar { grid-template-columns: 1fr; }
+  .contact-right { display: none; }
+  .contact-left { padding: 3rem 1.2rem; }
+  .about-content { padding: 3rem 1.2rem; }
+  footer { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo" onclick="goHome()">Luisa Espinosa</span>
+  <div class="nav-center">
+    <a href="#" onclick="goHome(); setTimeout(()=>scrollToSection('campaigns'),80); return false;">Campaigns</a>
+    <a href="#" onclick="goHome(); setTimeout(()=>scrollToSection('filmmaking'),80); return false;">Filmmaking</a>
+    <a href="#" onclick="goHome(); setTimeout(()=>scrollToSection('content'),80); return false;">Content</a>
+    <a href="#" onclick="goHome(); setTimeout(()=>scrollToSection('about-integrated'),80); return false;">About</a>
+  </div>
+  <div class="nav-right">
+    <a href="mailto:luisaespinosa.prod@gmail.com">Contact</a>
+    <a href="https://instagram.com/_luisaespinosa" target="_blank" class="nav-icon" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="https://tiktok.com/@luisaespinosaa" target="_blank" class="nav-icon" aria-label="TikTok">
+      <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+    </a>
+  </div>
+  <button class="nav-hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#" onclick="goHome(); closeMobile(); return false;">Home</a>
+  <a href="#" onclick="goHome(); closeMobile(); setTimeout(()=>scrollToSection('campaigns'),80); return false;">Campaigns</a>
+  <a href="#" onclick="goHome(); closeMobile(); setTimeout(()=>scrollToSection('filmmaking'),80); return false;">Filmmaking</a>
+  <a href="#" onclick="goHome(); closeMobile(); setTimeout(()=>scrollToSection('content'),80); return false;">Content</a>
+  <a href="#" onclick="goHome(); closeMobile(); setTimeout(()=>scrollToSection('about-integrated'),80); return false;">About</a>
+  <a href="mailto:luisaespinosa.prod@gmail.com" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-left">
+      <span class="hero-name-thin">LUISA</span>
+      <span class="hero-name-black">ESPINOSA</span>
+      <p class="hero-subtitle">Creative Producer · Barcelona</p>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marquee-track"></div>
+  </div>
+
+  <hr class="divider">
+  <div id="campaigns">
+    <div class="section-header"><h2 class="section-title">Campaigns</h2></div>
+    <div class="gallery" id="gallery-campaigns"></div>
+  </div>
+
+  <hr class="divider">
+  <div id="filmmaking">
+    <div class="section-header"><h2 class="section-title">Filmmaking</h2></div>
+    <div class="gallery" id="gallery-filmmaking"></div>
+  </div>
+
+  <hr class="divider">
+  <div id="content">
+    <div class="section-header"><h2 class="section-title">Content</h2></div>
+    <div class="gallery" id="gallery-content"></div>
+    <div class="content-grid">
+
+      <div class="content-item" style="cursor:default;">
+        <iframe src="https://drive.google.com/file/d/1v_th_-gjrGDrvKRSZwYej7aAvnqs061y/preview" allow="autoplay; fullscreen" style="width:100%;height:100%;border:none;display:block;"></iframe>
+        <div class="content-overlay"><span class="content-platform">Content</span></div>
+      </div>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DH3rT3cvKDj/?hl=es" target="_blank">
+        <img src="COVER_PANCARTAS.png" alt="">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DW4FWcEis08/" target="_blank">
+        <img src="URBAN-GARDEN.png" alt="Urban Garden">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DOl2jsDlUIN/" target="_blank">
+        <img src="1HALF.png" alt="">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DOVT7WCj2hn/" target="_blank">
+        <img src="BACK-TO-WORK.png" alt="Back to Work">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DKueMlWM9ze/" target="_blank">
+        <img src="BOLSA-GIGANTE.png" alt="Bolsa Gigante">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DIvmh6AIzNR/" target="_blank">
+        <img src="SANT-JORDI.png" alt="Sant Jordi">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DF-pIUVv8D5/" target="_blank">
+        <img src="SAN-VALENTIN.png" alt="San Valentín">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.tiktok.com/@radiantwatchesandjewels/video/7628646665104280854" target="_blank">
+        <img src="urban-g-influs.png" alt="">
+        <div class="content-overlay"><span class="content-platform">TikTok</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.tiktok.com/@radiantwatchesandjewels/video/7489489673811676438" target="_blank">
+        <img src="STREET-ENTREV.png" alt="Street Entrevista">
+        <div class="content-overlay"><span class="content-platform">TikTok</span></div>
+      </a>
+
+      <a class="content-item" href="https://www.instagram.com/reel/DH3rT3cvKDj/" target="_blank">
+        <img src="COVER_PANCARTAS.png" alt="">
+        <div class="content-overlay"><span class="content-platform">Instagram</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ABOUT INTEGRADO -->
+  <div id="about-integrated">
+    <div class="about-integrated">
+      <div class="about-integrated-left">
+        <div class="about-main-photo">
+          <img src="WORK-2.jpeg" alt="Luisa Espinosa">
+        </div>
+        <div class="about-thumbs">
+          <div class="about-thumb"><img src="WORK-1.jpeg" alt=""></div>
+          <div class="about-thumb"><img src="WORK-3.jpeg" alt=""></div>
+          <div class="about-thumb"><img src="WORK-4.jpeg" alt=""></div>
+          <div class="about-thumb"><img src="WORK-5.jpeg" alt=""></div>
+        </div>
+      </div>
+      <div class="about-integrated-right">
+        <p class="about-integrated-label">( About )</p>
+        <div style="margin-bottom:2rem;">
+          <p class="about-integrated-title" style="font-size:clamp(1rem,1.5vw,1.3rem); font-weight:700; margin-bottom:0.3rem;">Creative Producer & Filmmaker</p>
+          <p style="font-size:0.75rem; color:rgba(240,240,240,0.4); letter-spacing:0.05em;">based in Barcelona, Spain</p>
+        </div>
+        <p class="about-integrated-body">Luisa Espinosa (Pereira, Colombia, 1998) creció dibujando, pintando y fotografiando. Esa inquietud por el universo visual la llevó a estudiar comunicación audiovisual en Colombia y más tarde escritura de guion en Barcelona — no como un plan, sino siguiendo la curiosidad.</p>
+        <p class="about-integrated-body">Por el camino descubrió que su lugar no estaba en un solo rol. Tiene la visión de una filmmaker, la narrativa de una guionista y la estructura de una productora. No sigue un método. Sigue la curiosidad.</p>
+        <div class="about-integrated-en">Luisa Espinosa (Pereira, Colombia, 1998) grew up drawing, painting and taking photographs. That restlessness toward the visual world led her to study audiovisual communication in Colombia and later screenwriting in Barcelona — not as a plan, but following curiosity. Along the way she found that her place was not in a single role. She has the vision of a filmmaker, the narrative of a screenwriter and the structure of a producer. She doesn't follow a method. She follows curiosity.</div>
+        <div class="about-stack" style="margin-top:2.5rem;">
+          <span class="about-tag">Creative Concept</span>
+          <span class="about-tag">Scriptwriting</span>
+          <span class="about-tag">Production</span>
+          <span class="about-tag">Shooting Direction</span>
+          <span class="about-tag">Post-production</span>
+          <span class="about-tag">Social Media Strategy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-bar">
+    <div class="contact-left">
+      <div>
+        <p class="contact-label">( Contact )</p>
+        <p class="contact-cta">¿Trabajamos<br>juntos?</p>
+      </div>
+      <div class="contact-email-wrap">
+        <p class="contact-email-label">Para proyectos y colaboraciones:</p>
+        <a href="mailto:luisaespinosa.prod@gmail.com" class="contact-email">luisaespinosa.prod@gmail.com</a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="contact-right-inner">Hablemos</div>
+    </div>
+  </div>
+</div>
+<div id="page-project" class="page">
+  <div class="back-bar">
+    <button class="back-btn" onclick="goHome()">← Volver</button>
+  </div>
+  <div class="proj-hero">
+    <div class="proj-title-row">
+      <h1 class="proj-title" id="pj-title"></h1>
+      <span class="proj-season" id="pj-season"></span>
+    </div>
+  </div>
+  <div class="proj-main-media">
+    <div class="proj-main-slot" id="pj-main-slot">
+      <!-- media injected by JS -->
+    </div>
+  </div>
+  <div class="proj-text">
+    <div class="proj-text-col">
+      <h3>ES</h3>
+      <p id="pj-text-es"></p>
+    </div>
+    <div class="proj-text-col lang-en">
+      <h3>EN</h3>
+      <p id="pj-text-en"></p>
+    </div>
+  </div>
+  <div class="proj-gallery" id="pj-gallery"></div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="page-about" class="page">
+  <div class="back-bar">
+    <button class="back-btn" onclick="goHome()">← Volver</button>
+  </div>
+  <div class="about-content">
+    <h2 class="about-headline">Luisa Espinosa</h2>
+    <p class="about-body">Soy productora audiovisual con curiosidad por todo el proceso.</p>
+    <p class="about-body">El concepto, el guion, la cámara, el montaje, la estrategia — me interesa cada parte porque es lo que me permite conectarlas. Formada en comunicación audiovisual y escritura de guion, con experiencia produciendo desde series de televisión hasta campañas de moda y joyería.</p>
+    <p class="about-body">Basada en Barcelona.</p>
+    <br>
+    <p class="about-body" style="font-size:0.75rem; color:rgba(240,240,240,0.3); font-style:italic;">I'm an audiovisual producer with curiosity for the whole process. Concept, script, camera, editing, strategy — I care about each part because that's what allows me to connect them. Trained in audiovisual communication and screenwriting, with experience producing everything from TV series to fashion and jewellery campaigns. Based in Barcelona.</p>
+    <div class="about-stack">
+      <span class="about-tag">Creative Concept</span>
+      <span class="about-tag">Art Direction</span>
+      <span class="about-tag">Scriptwriting</span>
+      <span class="about-tag">Production</span>
+      <span class="about-tag">Shooting Direction</span>
+      <span class="about-tag">Post-production</span>
+      <span class="about-tag">Social Media Strategy</span>
+      <span class="about-tag">Campaign Development</span>
+      <span class="about-tag">Visual Identity</span>
+    </div>
+  </div>
+  <div class="contact-bar">
+    <div class="contact-left">
+      <div>
+        <p class="contact-label">( Contact )</p>
+        <p class="contact-cta">¿Trabajamos<br>juntos?</p>
+      </div>
+      <div class="contact-email-wrap">
+        <p class="contact-email-label">Para proyectos y colaboraciones:</p>
+        <a href="mailto:luisaespinosa.prod@gmail.com" class="contact-email">luisaespinosa.prod@gmail.com</a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="contact-right-inner">Hablemos</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-copy">© 2025 Luisa Espinosa · Creative Producer · Barcelona</span>
+</footer>
+
+<script>
+/* ═══════════════════════════════
+   PROYECTOS
+   Para añadir tu media real:
+   - thumb: 'img/nombre-archivo.mp4'
+   - mainMedia: 'img/nombre-archivo.mp4'
+   - gallery: ['img/video1.mp4', 'img/foto2.jpg', ...]
+   ═══════════════════════════════ */
+const PROJECTS = [
+  {
+    id: 'radiant-icons',
+    section: 'campaigns',
+    title: 'BE AN ICON',
+    season: 'FW25',
+    name: 'Be An Icon — FW25',
+    client: 'Radiant Watches & Jewels',
+    tags: 'Concept · Direction · Production · Post-production',
+    year: '2025',
+    thumb: 'https://drive.google.com/file/d/1qxG9q43DFQyKny7aAb12oVZg1ePWo7wd/view?usp=sharing',
+    mainMedia: 'https://drive.google.com/file/d/1qxG9q43DFQyKny7aAb12oVZg1ePWo7wd/view?usp=sharing',
+    gallery: [
+      'https://drive.google.com/file/d/1fSLHyaAQIEWibLdSngqIMhg3_OlsAbC-/view?usp=sharing',
+      'https://drive.google.com/file/d/1APYNChasUJCYO9x5ASmduApz1ijmoA9F/view?usp=sharing',
+      'https://drive.google.com/file/d/1lpP9HjnyQOm0yX_r8rtq7uLMwYKl-dG2/view?usp=sharing',
+      'https://drive.google.com/file/d/1dvi_v2KlWFRnFQnj9X8TnEWNqEVKAIlS/view?usp=sharing',
+      'https://drive.google.com/file/d/1s3Lqf9pHohfLAb6_-K7OBZZJ8z4ioh1E/view?usp=sharing'
+    ],
+    textEs: 'Radiant Icons nace de una pregunta simple: ¿qué pasa cuando llevas un reloj que no solo te acompaña, sino que te transforma?\n\nLa colección FW25 estaba inspirada en iconos del cine y la moda — clásicos y contemporáneos. El objetivo no era replicar su imagen, sino capturar su energía. Su presencia. Su manera de ocupar el espacio.\n\nEl concepto: al llevar un Radiant, tú mismo te conviertes en un ícono. No por comparación, sino porque transmites algo que no se puede ignorar.',
+    textEn: "Radiant Icons starts from a simple question: what happens when you wear a watch that doesn't just accompany you — it transforms you?\n\nThe FW25 collection drew inspiration from icons of cinema and fashion — classic and contemporary. The goal wasn't to replicate their image, but to capture their energy. Their presence. The way they own a room.\n\nThe concept: wearing a Radiant, you become an icon yourself. Not by comparison, but because you project something impossible to ignore."
+  },
+  {
+    id: 'personalities',
+    section: 'campaigns',
+    title: 'RADIANT PERSONALITIES',
+    season: 'SS25',
+    name: 'Radiant Personalities — SS25',
+    client: 'Radiant Watches & Jewels',
+    tags: 'Original Concept · Direction · Production',
+    year: '2025',
+    thumb: 'https://youtu.be/YbzvIkb3LUo',
+    mainMedia: 'https://youtu.be/YbzvIkb3LUo',
+    gallery: [
+      'https://drive.google.com/file/d/19XIieltmk5wINTbz_YWaYSdVyCVZH3zM/view?usp=sharing',
+      'https://drive.google.com/file/d/1HNA6KYMQ1xjUJp7-qb0L085t-BxvwDpp/view?usp=sharing',
+      'https://drive.google.com/file/d/1_gir71BOYte1rQZNdIMpIu_tsUyK9d4j/view?usp=sharing',
+      'https://drive.google.com/file/d/1-kIlDyTQRlWLGVuG35xwHAKFebsvo3Ut/view?usp=sharing',
+      'https://drive.google.com/file/d/1-lvGXOiqL88ZUT6-yBL98YarfbkGRlCv/view?usp=sharing'
+    ],
+    textEs: 'Un proyecto de concepto propio. Cada personalidad, un reloj. Cada reloj, un universo. Producción completa desde el moodboard hasta la entrega final, con dirección estética e identidad narrativa propia.',
+    textEn: 'An original concept project. Each personality, a jewel. Each jewel, a universe. Full production from moodboard to final delivery, with its own aesthetic direction and narrative identity.'
+  },
+  {
+    id: 'paradiso',
+    section: 'campaigns',
+    title: 'RADIANT PARADISO',
+    season: 'SS25',
+    name: 'Radiant Paradiso — SS25',
+    client: 'Radiant Watches & Jewels',
+    tags: 'Concept · Direction · Production · Post-production',
+    year: '2025',
+    thumb: 'https://drive.google.com/file/d/1cw8jfJlA5IhcfzopyKEjSy6DD9JmcDAr/view?usp=sharing',
+    mainMedia: 'https://drive.google.com/file/d/1cw8jfJlA5IhcfzopyKEjSy6DD9JmcDAr/view?usp=sharing',
+    gallery: [
+      'https://drive.google.com/file/d/1cv_seKjC02swoRcBSG1b4bRqzvRq5PIO/view?usp=sharing',
+      'https://drive.google.com/file/d/1WvttPJr4uhnv8YzuY24B__osu08YmJ0j/view?usp=sharing',
+      'https://drive.google.com/file/d/1VAvva8t4jwBIaRDOVSdF7t94rRFg0q8l/view?usp=sharing'
+    ],
+    textEs: 'Activación creativa de verano. Una identidad visual construida alrededor de la sensación — no del producto. Calor, nostalgia y actitud. Paradiso es un estado de ánimo más que una campaña.',
+    textEn: 'Summer creative activation. A visual identity built around the feeling — not the product. Heat, nostalgia, attitude. Paradiso is a mood more than a campaign.'
+  },
+  {
+    id: 'radiant-chains',
+    section: 'filmmaking',
+    title: 'RADIANT CHAINS',
+    season: 'FW25',
+    name: 'Radiant Chains — FW25',
+    client: 'Radiant Watches & Jewels',
+    tags: 'Concept · Direction · Post-production',
+    year: '2025',
+    thumb: 'https://drive.google.com/file/d/1Ql-Htx-KWFuCV7pLP3cJGyH8HZf7DtNV/view?usp=sharing',
+    mainMedia: 'https://drive.google.com/file/d/1Ql-Htx-KWFuCV7pLP3cJGyH8HZf7DtNV/view?usp=sharing',
+    mainRatio: '9/16',
+    gallery: [
+      'https://drive.google.com/file/d/1QtVsBCyFTmH_BjEM8kUN2O8A6C5CMTk-/view?usp=sharing',
+      'https://drive.google.com/file/d/1xltpRvJjzevmBtNrjUnXBjfQzy352vU3/view?usp=sharing',
+      'https://drive.google.com/file/d/11nfSpriK6ZdKBCKZwXLavce1fkTNt_E7/view?usp=sharing'
+    ],
+    textEs: 'Chains FW25 es una serie de piezas audiovisuales de lifestyle desarrolladas para cada subcolección de la temporada.\n\nLa premisa era simple — sacar la joyería a la calle. Locaciones urbanas, outfits construidos desde las tendencias del momento, y una dirección visual que hace que el producto se sienta parte de la vida real. No un catálogo. Una escena.',
+    textEn: "Chains FW25 is a series of lifestyle audiovisual pieces developed for each subcollection of the season.\n\nThe premise was simple — take the jewellery to the street. Urban locations, outfits built around current trends, and a visual direction that makes the product feel like part of real life. Not a catalogue. A scene."
+  },
+  {
+    id: 'hlgns',
+    section: 'filmmaking',
+    title: 'DIME QUE NO — HLGNS',
+    season: '2025',
+    name: 'Dime Que No — HLGNS',
+    client: 'HLGNS',
+    tags: 'Co-direction · Cinematography',
+    year: '2025',
+    thumb: 'THUMB_HLGNS.png',
+    mainMedia: 'https://youtu.be/-CoIER4wWmE',
+    mainRatio: '16/9',
+    gallery: [],
+    textEs: 'Co-dirección y dirección de fotografía para videoclip musical.',
+    textEn: 'Co-direction and cinematography for a music video.'
+  },
+  {
+    id: 'seiko',
+    section: 'content',
+    title: 'SEIKO SPAIN',
+    season: '2024',
+    name: 'Seiko Spain',
+    client: 'Seiko Spain',
+    tags: 'Production · Post-production',
+    year: '2024',
+    thumb: 'https://drive.google.com/file/d/1FkbOnQ_5CB0sM6TqLYi_10G9cy7tyZei/view?usp=sharing',
+    mainMedia: 'https://drive.google.com/file/d/1FkbOnQ_5CB0sM6TqLYi_10G9cy7tyZei/view?usp=sharing',
+    mainRatio: '9/16',
+    gallery: [
+      'https://drive.google.com/file/d/1lgOV83UEHLoOxpZL-ACBGbKZWAKU0ZEe/view?usp=sharing',
+      'https://drive.google.com/file/d/1icptdCEggkM5Jc47K6ymgHdYX1Ek0d5A/view?usp=sharing',
+      'https://drive.google.com/file/d/1eWFv-DvIYYb854so-QjwzE7SyiCzAc2b/view?usp=sharing'
+    ],
+    textEs: 'Contenido de retail de lujo para una de las marcas de relojería más reconocidas del mundo. Un proyecto que combina credibilidad de marca con dirección visual de nivel editorial.',
+    textEn: 'Luxury retail content for one of the world\'s most recognized watch brands. A project that combines brand credibility with editorial-level visual direction.'
+  },
+  {
+    id: 'cafe-guaca',
+    section: 'content',
+    title: 'CAFÉ DE LA GUACA',
+    season: '2024',
+    name: 'Café de la Guaca',
+    client: 'Café de la Guaca',
+    tags: 'Strategy · Direction',
+    year: '2024',
+    thumb: 'https://drive.google.com/file/d/1JF_h921Nk9b1BkGAoaYNEl-rHfe5NKcD/view?usp=sharing',
+    mainMedia: 'https://drive.google.com/file/d/1JF_h921Nk9b1BkGAoaYNEl-rHfe5NKcD/view?usp=sharing',
+    mainRatio: '9/16',
+    gallery: [
+      'https://drive.google.com/file/d/1g9eW4FNKuztvoqp_qJUsHs3yr4scbkFU/view?usp=sharing',
+      'https://drive.google.com/file/d/1ojFsat0pXyWaiG7cqXU4F6YoIBoNWXIa/view?usp=sharing',
+      'https://drive.google.com/file/d/1x3rzKm6wHAlT_AJ9eqFxM7ESGUaCE0mM/view?usp=sharing'
+    ],
+    textEs: 'Dirección creativa y storytelling para un espacio de gastronomía con identidad propia. Un proyecto de lifestyle donde el ritmo visual y la narrativa construyen la personalidad de marca desde adentro.',
+    textEn: 'Creative direction and storytelling for a gastronomy space with its own identity. A lifestyle project where visual rhythm and narrative build brand personality from the inside out.'
+  }
+];
+
+/* ═══════════════════════════════
+   HELPERS
+   ═══════════════════════════════ */
+function isVideo(src) {
+  if (!src) return false;
+  return /\.(mp4|webm|mov)$/i.test(src);
+}
+
+function getDriveId(url) {
+  const m = url.match(/\/file\/d\/([^/]+)/);
+  return m ? m[1] : null;
+}
+
+function getYouTubeId(url) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/))([^?&]+)/);
+  return m ? m[1] : null;
+}
+
+function isDrive(src) {
+  return src && src.includes('drive.google.com');
+}
+
+function isYouTube(src) {
+  return src && (src.includes('youtu.be') || src.includes('youtube.com'));
+}
+
+function makeIframe(embedUrl, opts = {}) {
+  const iframe = document.createElement('iframe');
+  iframe.src = embedUrl;
+  iframe.allow = 'autoplay; fullscreen';
+  iframe.allowFullscreen = true;
+  iframe.style.cssText = `width:100%;height:100%;border:none;display:block;${opts.style || ''}`;
+  return iframe;
+}
+
+function makeMedia(src, opts = {}) {
+  if (!src) return null;
+
+  if (isDrive(src)) {
+    const id = getDriveId(src);
+    if (!id) return null;
+    return makeIframe(`https://drive.google.com/file/d/${id}/preview`, opts);
+  }
+
+  if (isYouTube(src)) {
+    const id = getYouTubeId(src);
+    if (!id) return null;
+    return makeIframe(`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1`, opts);
+  }
+
+  if (isVideo(src)) {
+    const v = document.createElement('video');
+    v.src = src; v.autoplay = true; v.muted = true;
+    v.loop = true; v.playsInline = true;
+    if (opts.style) v.style.cssText = opts.style;
+    if (opts.clickable) {
+      v.style.cursor = 'pointer';
+      v.addEventListener('click', () => {
+        if (v.muted) { v.muted = false; v.play(); }
+        else if (v.paused) { v.play(); }
+        else { v.pause(); }
+      });
+    }
+    return v;
+  }
+
+  const i = document.createElement('img');
+  i.src = src; i.alt = '';
+  if (opts.style) i.style.cssText = opts.style;
+  return i;
+}
+
+/* ═══════════════════════════════
+   BUILD GALLERIES
+   ═══════════════════════════════ */
+function buildGalleries() {
+  ['campaigns','filmmaking','content'].forEach(section => {
+    const el = document.getElementById('gallery-' + section);
+    el.innerHTML = '';
+    PROJECTS.filter(p => p.section === section).forEach(p => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openProject(p.id);
+
+      const thumb = document.createElement('div');
+      thumb.className = 'gallery-thumb';
+
+      if (p.thumb) {
+        const m = makeMedia(p.thumb);
+        if (m) thumb.appendChild(m);
+      } else {
+        thumb.innerHTML = `
+          <div class="thumb-placeholder">
+            <div class="thumb-placeholder-plus">＋</div>
+            <div class="thumb-placeholder-label">Media</div>
+          </div>`;
+      }
+
+      const watermark = document.createElement('div');
+      watermark.className = 'thumb-watermark';
+      watermark.textContent = p.title;
+      thumb.appendChild(watermark);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'gallery-overlay';
+      overlay.textContent = 'Ver proyecto →';
+      thumb.appendChild(overlay);
+
+      item.innerHTML += '';
+      item.appendChild(thumb);
+      item.insertAdjacentHTML('beforeend', `
+        <div class="gallery-info">
+          <div>
+            <p class="gallery-name">${p.name}</p>
+            <p class="gallery-client">${p.client || ''}</p>
+            <p class="gallery-tags">${p.tags}</p>
+          </div>
+          <p class="gallery-year">${p.year}</p>
+        </div>`);
+      el.appendChild(item);
+    });
+  });
+}
+
+/* ═══════════════════════════════
+   OPEN PROJECT
+   ═══════════════════════════════ */
+function openProject(id) {
+  const p = PROJECTS.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('pj-title').textContent = p.title;
+  document.getElementById('pj-season').textContent = p.season;
+  // Client line
+  let clientEl = document.getElementById('pj-client');
+  if (!clientEl) {
+    clientEl = document.createElement('p');
+    clientEl.id = 'pj-client';
+    clientEl.style.cssText = 'font-size:0.7rem;letter-spacing:0.08em;color:rgba(240,240,240,0.35);margin-top:0.5rem;font-weight:300;';
+    document.querySelector('.proj-title-row').appendChild(clientEl);
+  }
+  clientEl.textContent = p.client || '';
+
+  // Text (convert \n\n to paragraphs)
+  document.getElementById('pj-text-es').innerHTML =
+    p.textEs.split('\n\n').map(t => `<p style="margin-bottom:1rem">${t}</p>`).join('');
+  document.getElementById('pj-text-en').innerHTML =
+    p.textEn.split('\n\n').map(t => `<p style="margin-bottom:1rem">${t}</p>`).join('');
+
+  // Main media
+  const slot = document.getElementById('pj-main-slot');
+  slot.innerHTML = '';
+  const ratio = p.mainRatio || '3/4';
+  slot.style.aspectRatio = ratio;
+  // For landscape videos, use full width instead of 45%
+  const isLandscape = ratio === '16/9';
+  slot.style.width = isLandscape ? '85%' : '45%';
+  slot.style.maxWidth = isLandscape ? '860px' : '480px';
+
+  if (p.mainMedia) {
+    const m = makeMedia(p.mainMedia, { style: 'width:100%;height:100%;object-fit:cover;', clickable: true });
+    if (m) slot.appendChild(m);
+  } else {
+    slot.innerHTML = `
+      <div class="proj-main-placeholder">
+        <span>＋</span><span>Media principal</span>
+      </div>`;
+  }
+
+  // Gallery
+  const gal = document.getElementById('pj-gallery');
+  gal.innerHTML = '';
+
+  const count = p.gallery ? p.gallery.length : 0;
+  if (count === 0) {
+    gal.style.display = 'none';
+  } else {
+    gal.style.display = 'grid';
+    gal.style.gridTemplateColumns = `repeat(${Math.min(count, 4)}, 1fr)`;
+    p.gallery.forEach((src, i) => {
+      const galSlot = document.createElement('div');
+      galSlot.className = 'proj-gallery-slot';
+      const m = makeMedia(src, { clickable: true });
+      if (m) {
+        galSlot.appendChild(m);
+      } else {
+        galSlot.innerHTML = `
+          <div class="proj-gallery-placeholder">
+            <span>＋</span><span>Media ${i+1}</span>
+          </div>`;
+      }
+      gal.appendChild(galSlot);
+    });
+  }
+
+  showPage('project');
+}
+
+/* ═══════════════════════════════
+   POLAROID
+   ═══════════════════════════════ */
+function handlePolaroid(input) {
+  if (!input.files[0]) return;
+  const url = URL.createObjectURL(input.files[0]);
+  const img = document.getElementById('polaroid-img');
+  img.src = url; img.style.display = 'block';
+  document.getElementById('polaroid-ph').style.display = 'none';
+}
+
+/* ═══════════════════════════════
+   NAV
+   ═══════════════════════════════ */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goHome() { showPage('home'); }
+function goAbout() { showPage('about'); }
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+function toggleMobile() { document.getElementById('mobile-menu').classList.toggle('open'); }
+function closeMobile() { document.getElementById('mobile-menu').classList.remove('open'); }
+
+/* ═══════════════════════════════
+   MARQUEE
+   ═══════════════════════════════ */
+function buildMarquee() {
+  const items = [
+    'Creative Producer',
+    'Barcelona',
+    'Fashion',
+    'Culture',
+    'Digital Storytelling',
+    'Producción Audiovisual',
+  ];
+  const track = document.getElementById('marquee-track');
+  if (!track) return;
+  // Duplicate for seamless loop
+  [0, 1].forEach(() => {
+    items.forEach(text => {
+      const el = document.createElement('span');
+      el.className = 'marquee-item';
+      el.innerHTML = `${text}<span class="marquee-dot"></span>`;
+      track.appendChild(el);
+    });
+  });
+}
+
+buildMarquee();
+buildGalleries();
+</script>
+</body>
+</html>
