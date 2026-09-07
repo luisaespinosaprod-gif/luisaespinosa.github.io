@@ -75,7 +75,7 @@ body::after{
 
 .sidebar-name-thin{
   display:block;
-  font-weight:200;
+  font-weight:400;
   font-size:24px; /* mínimo 18pt = 24px */
   letter-spacing:0.04em;
   text-transform:uppercase;
@@ -226,7 +226,7 @@ body::after{
 }
 
 .hero-title-thin{
-  font-weight:200;
+  font-weight:400;
   font-size:clamp(2.5rem,5vw,6rem);
   letter-spacing:0.02em;
   text-transform:uppercase;
@@ -244,7 +244,7 @@ body::after{
 }
 
 .hero-sub{
-  font-weight:200;
+  font-weight:400;
   font-size:0.72rem;
   letter-spacing:0.1em;
   color:rgba(255,255,255,0.55);
@@ -271,12 +271,14 @@ body::after{
 
 .videos-grid .video-card {
   flex: 0 0 auto;
-  height: 380px;
 }
 
+/* Altura fija en el propio contenedor de vídeo (no en la tarjeta): así el
+   título opcional debajo no le resta alto al vídeo y todas las miniaturas
+   de la fila quedan alineadas, tengan o no título */
 .videos-grid .video-container {
   width: auto;
-  height: 100%;
+  height: 380px;
 }
 
 /* Campañas: una fila por campaña, cada una con su propio carrusel horizontal */
@@ -400,7 +402,7 @@ body::after{
 /* Marca/Temporada: light (2px menor que el título) — display inline */
 .video-meta {
   font-family: 'PP Neue Montreal', sans-serif;
-  font-weight: 200;
+  font-weight:400;
   letter-spacing: 0.7px;
   color: rgba(0,0,0,0.5);
   display: inline;
@@ -482,7 +484,7 @@ body::after{
 .about-credit-role,
 .contact-email-label-text{
   font-family:'PP Neue Montreal',sans-serif;
-  font-weight:200;
+  font-weight:400;
   font-size:16px;
   line-height:1.7;
   letter-spacing:-0.3px;
@@ -549,7 +551,7 @@ body::after{
 
 .grid-item-client{
   font-family:'PP Neue Montreal',sans-serif;
-  font-weight:200;
+  font-weight:400;
   font-size:0.52rem;
   color:rgba(255,255,255,0.6);
   letter-spacing:0.04em;
@@ -570,7 +572,7 @@ body::after{
 
 .grid-item-caption-sub{
   font-family:'PP Neue Montreal',sans-serif;
-  font-weight:200;
+  font-weight:400;
   font-size:35pt; /* 2pt menor que el título */
   letter-spacing:0.7px;
   color:rgba(0,0,0,0.55);
@@ -591,9 +593,12 @@ body::after{
 }
 
 /* ═══════════════ PROJECT OVERLAY ═══════════════ */
+/* left:var(--sidebar) en vez de inset:0 — deja la sidebar fija visible,
+   igual que en la página principal (ver #below-hero) */
 #project-overlay{
   display:none;
-  position:fixed;inset:0;
+  position:fixed;
+  top:0; left:var(--sidebar); right:0; bottom:0;
   background:var(--white);
   z-index:500;
   overflow-y:auto;
@@ -623,8 +628,27 @@ body::after{
 
 .proj-back button:hover{opacity:0.4;}
 
+/* Columna izquierda (título + descripción) / columna derecha (carrusel) */
+.proj-layout{
+  display:grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap:2.5rem;
+  align-items:start;
+  padding:0 2rem 3rem;
+}
+
+.proj-left{
+  position:sticky;
+  top:4.5rem;
+  min-width:0;
+}
+
+.proj-right{
+  min-width:0;
+}
+
 .proj-header{
-  padding:2rem 2rem 1rem;
+  padding:2rem 0 1rem;
 }
 
 .proj-title-text{
@@ -653,7 +677,7 @@ body::after{
 .proj-client{
   font-size:0.7rem;
   color:var(--gray);
-  font-weight:200;
+  font-weight:400;
   letter-spacing:0.04em;
 }
 
@@ -663,33 +687,9 @@ body::after{
   letter-spacing:0.05em;
 }
 
-.proj-main-video{
-  margin:1.5rem 2rem;
-  background:#111;
-  position:relative;
-  overflow:hidden;
-}
-
-.proj-main-video iframe{
-  display:block;
-  border:none;
-  aspect-ratio:9/16;
-  height:80vh;
-  width:auto;
-  max-width:100%;
-  margin:0 auto;
-}
-
-.proj-main-video.horizontal iframe{
-  aspect-ratio:16/9;
-  width:100%;
-  height:auto;
-}
-
 .proj-text-block{
-  padding:1.5rem 2rem 2rem;
+  padding:1.5rem 0 0;
   border-top:1px solid rgba(0,0,0,0.06);
-  max-width:680px;
 }
 
 .proj-text-label{
@@ -707,30 +707,25 @@ body::after{
   color:rgba(0,0,0,0.65);
 }
 
-.proj-gallery-grid{
+/* Carrusel de piezas del proyecto: reutiliza .video-card/.video-container
+   (mismo criterio alto fijo + ancho auto que Campañas/Realización, sin
+   barras negras ni blancas — ver .video-container iframe más arriba) */
+.proj-carousel{
   display:flex;
-  gap:3px;
+  gap:0.75rem;
   overflow-x:auto;
   scroll-snap-type:x proximity;
-  margin:0 0 0;
-  padding-bottom:0.5rem;
+  padding:2rem 0 0.5rem;
 }
 
-/* Altura fija, ancho auto: cada clip conserva su relación de aspecto real
-   (aspect-ratio se fija por clip en JS, ver openProject()) */
-.proj-gallery-slot{
-  position:relative;
+.proj-carousel .video-card{
   flex:0 0 auto;
-  height:65vh;
-  max-width:90vw;
-  overflow:hidden;
-  background:#111;
-  scroll-snap-align:start;
+  cursor:default;
 }
 
-.proj-gallery-slot iframe{
-  width:100%;height:100%;
-  border:none;display:block;
+.proj-carousel .video-container{
+  width:auto;
+  height:75vh;
 }
 
 /* ═══════════════ VIDEO LIGHTBOX ═══════════════ */
@@ -768,7 +763,7 @@ body::after{
   color:white;
   font-size:1.2rem;
   cursor:pointer;
-  font-weight:200;
+  font-weight:400;
   letter-spacing:0.1em;
   font-family:var(--font);
 }
@@ -869,7 +864,7 @@ body::after{
 }
 
 .about-label{
-  font-weight:200;
+  font-weight:400;
   font-size:0.6rem;
   letter-spacing:0.25em;
   text-transform:uppercase;
@@ -923,7 +918,7 @@ body::after{
 }
 
 .about-credits-label{
-  font-weight:200;
+  font-weight:400;
   font-size:0.58rem;
   letter-spacing:0.25em;
   text-transform:uppercase;
@@ -968,7 +963,7 @@ body::after{
 }
 
 .contact-label-text{
-  font-weight:200;
+  font-weight:400;
   font-size:0.6rem;
   letter-spacing:0.25em;
   text-transform:uppercase;
@@ -987,7 +982,7 @@ body::after{
 }
 
 .contact-email-label{
-  font-weight:200;
+  font-weight:400;
   font-size:0.58rem;
   letter-spacing:0.2em;
   text-transform:uppercase;
@@ -1030,7 +1025,7 @@ body::after{
   font-size:0.6rem;
   letter-spacing:0.2em;
   text-transform:uppercase;
-  font-weight:200;
+  font-weight:400;
   color:rgba(255,255,255,0.4);
 }
 
@@ -1041,7 +1036,7 @@ body::after{
   border-bottom:1px solid rgba(255,255,255,0.2);
   color:var(--white);
   font-family:var(--font);
-  font-weight:200;
+  font-weight:400;
   font-size:0.88rem;
   padding:0.5rem 0;
   outline:none;
@@ -1100,7 +1095,7 @@ footer{
 
 .about-bio{
   font-family:'PP Neue Montreal',sans-serif;
-  font-weight:200;
+  font-weight:400;
   font-size:16px;
   line-height:1.75;
   letter-spacing:-0.3px;
@@ -1122,7 +1117,7 @@ footer{
 
 .mobile-name{
   font-family:'PP Neue Montreal',sans-serif;
-  font-weight:200;
+  font-weight:400;
   font-size:0.7rem;
   letter-spacing:0.12em;
   text-transform:uppercase;
@@ -1183,9 +1178,12 @@ footer{
   #main{margin-left:0;width:100%;padding-top:46px;}
   #below-hero{margin-left:0;}
   .project-grid{grid-template-columns:repeat(2,1fr);}
-  .videos-grid .video-card{height:280px;}
-  .campana-carousel .video-card{height:280px;}
-  .proj-gallery-slot{height:50vh;}
+  .videos-grid .video-container{height:280px;}
+  /* Altura de .campana-carousel .video-card en móvil la calcula buildCampanas() en JS */
+  #project-overlay{left:0;top:46px;}
+  .proj-layout{grid-template-columns:1fr;gap:0;}
+  .proj-left{position:static;}
+  .proj-carousel .video-container{height:50vh;}
   #sobre{grid-template-columns:1fr;}
   .about-text{border-left:none;border-top:1px solid rgba(0,0,0,0.06);}
   #contacto{grid-template-columns:1fr;}
@@ -1406,17 +1404,22 @@ footer{
   <div class="proj-back">
     <button onclick="closeProject()">← Volver</button>
   </div>
-  <div class="proj-header">
-    <div class="proj-title-text" id="pj-title"></div>
-    <div class="proj-meta">
-      <span class="proj-season" id="pj-season"></span>
-      <span class="proj-client" id="pj-client"></span>
-      <span class="proj-roles" id="pj-roles"></span>
+  <div class="proj-layout">
+    <div class="proj-left">
+      <div class="proj-header">
+        <div class="proj-title-text" id="pj-title"></div>
+        <div class="proj-meta">
+          <span class="proj-season" id="pj-season"></span>
+          <span class="proj-client" id="pj-client"></span>
+          <span class="proj-roles" id="pj-roles"></span>
+        </div>
+      </div>
+      <div class="proj-text-block" id="pj-text-block"></div>
+    </div>
+    <div class="proj-right">
+      <div class="proj-carousel" id="pj-carousel"></div>
     </div>
   </div>
-  <div class="proj-main-video" id="pj-main-slot"></div>
-  <div class="proj-text-block" id="pj-text-block"></div>
-  <div class="proj-gallery-grid" id="pj-gallery"></div>
 </div>
 
 <!-- VIDEO LIGHTBOX -->
@@ -1434,10 +1437,6 @@ footer{
 
 function vimeoEmbed(id, h, params='autoplay=1&muted=1&loop=1&background=1&controls=0') {
   return `https://player.vimeo.com/video/${id}?h=${h}&${params}`;
-}
-
-function vimeoPlayer(id, h) {
-  return `https://player.vimeo.com/video/${id}?h=${h}&autoplay=1&muted=1&loop=1&controls=0`;
 }
 
 // CAMPAÑAS
@@ -1728,6 +1727,37 @@ function setNaturalRatio(item, ratio) {
   item.style.aspectRatio = ratio || '9/16';
 }
 
+/* Calcula la altura de tarjeta necesaria para que la suma de anchos de
+   los clips (según su aspect-ratio real) cubra al menos el 80% del ancho
+   disponible de la fila. Se recalcula al cargar y al redimensionar. */
+function ratioToNumber(ratio) {
+  const [w, h] = String(ratio || '9/16').split('/').map(Number);
+  return w / h;
+}
+
+function layoutCampanaRow(row) {
+  const track = row.querySelector('.campana-carousel');
+  const cards = [...track.children];
+  if (!cards.length) return;
+
+  const gap = parseFloat(getComputedStyle(track).gap) || 0;
+  const ratios = cards.map(c => ratioToNumber(c.dataset.ratio));
+  const sumRatios = ratios.reduce((a, b) => a + b, 0);
+
+  const availableWidth = row.getBoundingClientRect().width;
+  const targetWidth = availableWidth * 0.8;
+  const rawHeight = (targetWidth - gap * (cards.length - 1)) / sumRatios;
+
+  /* Límites razonables: no demasiado bajo, ni tan alto que no quepa en pantalla */
+  const height = Math.max(220, Math.min(rawHeight, window.innerHeight * 0.75));
+
+  cards.forEach(c => { c.style.height = `${height}px`; });
+}
+
+function layoutAllCampanaRows() {
+  document.querySelectorAll('.campana-row').forEach(layoutCampanaRow);
+}
+
 function buildCampanas() {
   const wrap = document.getElementById('grid-campanas');
   wrap.className = 'campanas-list';
@@ -1749,18 +1779,23 @@ function buildCampanas() {
         onClick: () => openProject(project.id)
       });
       card.querySelector('.video-container').style.aspectRatio = clip.ratio;
+      card.dataset.ratio = clip.ratio;
       track.appendChild(card);
     });
     row.appendChild(track);
 
-    /* Título debajo de los clips de la campaña */
+    /* Título debajo de los clips de la campaña — enlaza a la página del proyecto */
     const header = document.createElement('div');
     header.className = 'campana-row-header';
+    header.style.cursor = 'pointer';
+    header.onclick = () => openProject(project.id);
     header.innerHTML = `<span class="video-title">${project.title}</span><span class="video-meta">  ${project.client} — ${project.season}</span>`;
     row.appendChild(header);
 
     wrap.appendChild(row);
   });
+
+  layoutAllCampanaRows();
 }
 
 function buildRealizacion() {
@@ -1833,24 +1868,6 @@ function openProject(id) {
   document.getElementById('pj-client').textContent = p.client;
   document.getElementById('pj-roles').textContent = p.roles;
 
-  // Main video
-  const mainSlot = document.getElementById('pj-main-slot');
-  mainSlot.innerHTML = '';
-  const mainClip = p.clips[p.mainClip];
-  const isHorizontal = mainClip.ratio === '16/9';
-  if (isHorizontal) mainSlot.classList.add('horizontal');
-  else mainSlot.classList.remove('horizontal');
-
-  const mainIframe = document.createElement('iframe');
-  if (mainClip.type === 'vimeo') {
-    mainIframe.src = vimeoPlayer(mainClip.id, mainClip.h);
-  } else if (mainClip.type === 'youtube') {
-    mainIframe.src = `https://www.youtube.com/embed/${mainClip.id}?autoplay=1&muted=1&loop=1&playlist=${mainClip.id}&controls=1`;
-  }
-  mainIframe.allow = 'autoplay; fullscreen; picture-in-picture';
-  mainIframe.allowFullscreen = true;
-  mainSlot.appendChild(mainIframe);
-
   // Text
   const textBlock = document.getElementById('pj-text-block');
   if (p.text && p.text.trim()) {
@@ -1861,25 +1878,14 @@ function openProject(id) {
     textBlock.style.display = 'none';
   }
 
-  // Gallery (all clips except main)
-  const gal = document.getElementById('pj-gallery');
-  gal.innerHTML = '';
-  p.clips.forEach((clip, i) => {
-    if (i === p.mainClip) return;
-    const slot = document.createElement('div');
-    slot.className = 'proj-gallery-slot';
-    slot.style.aspectRatio = clip.ratio;
-
-    const iframe = document.createElement('iframe');
-    if (clip.type === 'vimeo') {
-      iframe.src = vimeoPlayer(clip.id, clip.h);
-    } else if (clip.type === 'youtube') {
-      iframe.src = `https://www.youtube.com/embed/${clip.id}?controls=1`;
-    }
-    iframe.allow = 'autoplay; fullscreen';
-    iframe.allowFullscreen = true;
-    slot.appendChild(iframe);
-    gal.appendChild(slot);
+  // Carrusel horizontal con todas las piezas del proyecto — mismo componente
+  // .video-card/.video-container (altura fija + ancho auto) que Campañas/Realización
+  const carousel = document.getElementById('pj-carousel');
+  carousel.innerHTML = '';
+  p.clips.forEach(clip => {
+    const card = makeVideoCard({ clip, project: null, showCaption: false, onClick: null });
+    card.querySelector('.video-container').style.aspectRatio = clip.ratio;
+    carousel.appendChild(card);
   });
 
   document.getElementById('project-overlay').classList.add('open');
@@ -2008,6 +2014,13 @@ buildCampanas();
 buildRealizacion();
 buildContenido();
 initPhotoLoop();
+
+/* Recalcula el ancho del carrusel de Campañas al redimensionar la ventana */
+let campanaResizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(campanaResizeTimer);
+  campanaResizeTimer = setTimeout(layoutAllCampanaRows, 150);
+});
 </script>
 </body>
 </html>
