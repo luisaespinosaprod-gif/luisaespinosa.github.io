@@ -181,9 +181,12 @@ body::after{
 }
 
 /* ═══════════════ HERO ═══════════════ */
+/* margin-left:var(--sidebar) para que el vídeo arranque donde termina la
+   sidebar fija, en vez de dibujarse a 100vw por debajo de ella */
 #hero{
   position:relative;
-  width:100vw;
+  margin-left:var(--sidebar);
+  width:calc(100vw - var(--sidebar));
   height:100vh;
   background:#111;
   overflow:hidden;
@@ -1177,6 +1180,7 @@ footer{
   #mobile-header{display:flex;}
   #main{margin-left:0;width:100%;padding-top:46px;}
   #below-hero{margin-left:0;}
+  #hero{margin-left:0;width:100vw;}
   .project-grid{grid-template-columns:repeat(2,1fr);}
   .videos-grid .video-container{height:280px;}
   /* Altura de .campana-carousel .video-card en móvil la calcula buildCampanas() en JS */
@@ -1600,19 +1604,25 @@ const CONTENIDO_ITEMS = [
    HELPERS
    ═══════════════════════════════════════ */
 
-function makeVimeoThumb(id, h) {
-  /* Vimeo background: autopause=0 evita bloqueos, scale(1.35) en CSS rellena contenedor 3:4 */
-  const iframe = document.createElement('iframe');
-  iframe.src = `https://player.vimeo.com/video/${id}?h=${h}&autoplay=1&muted=1&loop=1&background=1&autopause=0&controls=0`;
-  iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-  iframe.allowFullscreen = true;
-  return iframe;
-}
+/* Lazy-load: los iframes de Vimeo/YouTube guardan su URL en data-src y no
+   cargan hasta que la tarjeta está a punto de entrar en pantalla — evita
+   que la home dispare ~28 reproductores a la vez al cargar. */
+const lazyVideoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const iframe = entry.target.querySelector('iframe[data-src]');
+    if (iframe) {
+      iframe.src = iframe.dataset.src;
+      iframe.removeAttribute('data-src');
+    }
+    lazyVideoObserver.unobserve(entry.target);
+  });
+}, { rootMargin: '600px 0px' });
 
-/* YouTube: iframe con autoplay silenciado */
+/* YouTube: iframe con autoplay silenciado (lazy — ver lazyVideoObserver) */
 function makeYouTubeIframe(id, extraParams='') {
   const iframe = document.createElement('iframe');
-  iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}${extraParams}`;
+  iframe.dataset.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}${extraParams}`;
   iframe.allow = 'autoplay; fullscreen';
   iframe.allowFullscreen = true;
   return iframe;
@@ -1634,18 +1644,21 @@ function makeVideoCard({ clip, project, showCaption, onClick }) {
   // Vídeo / imagen según tipo
   if (clip.type === 'vimeo') {
     const iframe = document.createElement('iframe');
-    iframe.src = `https://player.vimeo.com/video/${clip.id}?h=${clip.h}&autoplay=1&loop=1&muted=1&background=1&autopause=0`;
+    iframe.dataset.src = `https://player.vimeo.com/video/${clip.id}?h=${clip.h}&autoplay=1&loop=1&muted=1&background=1&autopause=0`;
     iframe.frameBorder = '0';
     iframe.allow = 'autoplay; fullscreen; picture-in-picture';
     iframe.allowFullscreen = true;
     container.appendChild(iframe);
+    lazyVideoObserver.observe(container);
   } else if (clip.type === 'youtube') {
     const extra = clip.extraParams || '';
     container.appendChild(makeYouTubeIframe(clip.id, extra));
+    lazyVideoObserver.observe(container);
   } else if (clip.type === 'link' && clip.thumb) {
     const img = document.createElement('img');
     img.src = clip.thumb;
     img.alt = '';
+    img.loading = 'lazy';
     container.appendChild(img);
     // Badge de plataforma
     const badge = document.createElement('div');
@@ -1680,51 +1693,6 @@ function makeVideoCard({ clip, project, showCaption, onClick }) {
   }
 
   return card;
-}
-
-// makeYouTubeThumb replaced by makeYouTubeIframe
-function makeYouTubeThumb_DEPRECATED(thumb) {
-  const img = document.createElement('img');
-  img.src = thumb;
-  img.alt = '';
-  return img;
-}
-
-function makeImageThumb(src) {
-  const img = document.createElement('img');
-  img.src = src;
-  img.alt = '';
-  return img;
-}
-
-/* ═══════════════════════════════════════
-   BUILD GRIDS
-   ═══════════════════════════════════════ */
-
-
-/* ═══════════════════════════════════════
-   BUILD HELPERS
-   ═══════════════════════════════════════ */
-
-function makeGridItem(clip) {
-  /* Crea el elemento de vídeo/imagen para el grid respetando la ratio original */
-  if (clip.type === 'vimeo') {
-    return makeVimeoThumb(clip.id, clip.h);
-  } else if (clip.type === 'youtube') {
-    return makeYouTubeIframe(clip.id);
-  } else if (clip.type === 'link' && clip.thumb) {
-    const img = document.createElement('img');
-    img.src = clip.thumb;
-    img.alt = '';
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-    return img;
-  }
-  return null;
-}
-
-function setNaturalRatio(item, ratio) {
-  /* Aplica la relación de aspecto natural al contenedor sin forzar recortes */
-  item.style.aspectRatio = ratio || '9/16';
 }
 
 /* Calcula la altura de tarjeta necesaria para que la suma de anchos de
@@ -2015,12 +1983,17 @@ buildRealizacion();
 buildContenido();
 initPhotoLoop();
 
-/* Recalcula el ancho del carrusel de Campañas al redimensionar la ventana */
+/* Recalcula el ancho del carrusel de Campañas al redimensionar la ventana,
+   girar el móvil, o si el layout cambia tras la carga inicial (fuentes/
+   barra del navegador en Safari móvil, que puede medir mal al primer intento) */
 let campanaResizeTimer;
-window.addEventListener('resize', () => {
+function scheduleCampanaLayout() {
   clearTimeout(campanaResizeTimer);
   campanaResizeTimer = setTimeout(layoutAllCampanaRows, 150);
-});
+}
+window.addEventListener('resize', scheduleCampanaLayout);
+window.addEventListener('orientationchange', scheduleCampanaLayout);
+window.addEventListener('load', scheduleCampanaLayout);
 </script>
 </body>
 </html>
