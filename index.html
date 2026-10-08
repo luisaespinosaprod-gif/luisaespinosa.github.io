@@ -9,6 +9,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://luisaespinosa.com">
 <title>Luisa Espinosa — Productora Creativa</title>
+<link rel="preconnect" href="https://player.vimeo.com">
+<link rel="preconnect" href="https://i.vimeocdn.com">
+<link rel="preconnect" href="https://f.vimeocdn.com">
+<link rel="preconnect" href="https://vod-adaptive-ak.vimeocdn.com">
+<script src="https://cdn.jsdelivr.net/npm/@vimeo/player@2.25.1/dist/player.min.js" defer></script>
 <style>
 @font-face{font-family:'PP Neue Montreal';src:url('neue-montreal-v2-0-font-family/ppneuemontreal-thin.otf') format('opentype');font-weight:200;font-style:normal;font-display:swap;}
 @font-face{font-family:'PP Neue Montreal';src:url('neue-montreal-v2-0-font-family/ppneuemontreal-book.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap;}
@@ -30,7 +35,7 @@
   --font-title:'PP Neue Montreal',sans-serif;
 }
 
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:clip;} /* evita que en móvil la página se ensanche más que la pantalla */
 
 body{
   background:var(--white);
@@ -339,6 +344,15 @@ body::after{
   border: none;
 }
 
+/* Portada fija encima del reproductor mientras carga: se ve la imagen al
+   instante en lugar de un recuadro negro, y se funde cuando el vídeo arranca */
+.video-poster{
+  transition:opacity 0.5s ease;
+  pointer-events:none;
+}
+
+.video-poster.is-hidden{opacity:0;}
+
 /* Imágenes dentro del video-container (TikTok/Instagram con thumbnail) */
 .video-container img {
   position: absolute;
@@ -461,7 +475,6 @@ body::after{
 .body-text,
 .proj-text-body,
 .about-bio,
-.about-credit-role,
 .contact-email-label-text{
   font-family:'PP Neue Montreal',sans-serif;
   font-weight:400;
@@ -769,6 +782,7 @@ body::after{
 
 .video-modal-frame{
   --r: 0.5625;
+  position:relative;
   aspect-ratio: var(--r);
   width:min(100%, calc((100vh - 5rem) * var(--r)));
   width:min(100%, calc((100dvh - 5rem) * var(--r)));
@@ -780,6 +794,14 @@ body::after{
   height:100%;
   border:none;
   display:block;
+}
+
+.video-modal-frame .video-poster{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 .video-modal-close{
@@ -857,15 +879,25 @@ body::after{
 }
 
 /* ═══════════════ ABOUT ═══════════════ */
+/* Fondo negro: foto en círculo a la izquierda, nombre y bio a la derecha */
 #sobre{
   display:grid;
-  grid-template-columns:0.8fr 1fr; /* Fotos reducidas un 20% (de 1fr a 0.8fr) */
-  min-height:70vh;
-  border-top:1px solid rgba(0,0,0,0.06);
+  grid-template-columns:1fr 1.15fr;
+  gap:4rem;
+  align-items:center;
+  min-height:80vh;
+  padding:5rem 4rem;
+  background:#000;
+  color:#fff;
+  border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .about-photos{
   position:relative;
+  width:min(100%, 34rem);
+  aspect-ratio:1;
+  justify-self:center;
+  border-radius:50%;
   overflow:hidden;
   background:#111;
 }
@@ -881,98 +913,40 @@ body::after{
 .about-photos-slide img{
   width:100%;height:100%;
   object-fit:cover;
-  object-position:center top;
+  object-position:center 30%;
   display:block;
   filter:grayscale(100%);
 }
 
 .about-text{
-  padding:3rem 3rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  border-left:1px solid rgba(0,0,0,0.06);
+  max-width:38rem;
 }
 
-.about-label{
-  font-weight:400;
-  font-size:0.6rem;
-  letter-spacing:0.25em;
-  text-transform:uppercase;
-  color:rgba(0,0,0,0.3);
-  margin-bottom:2rem;
-}
-
-.about-title{
+.about-name{
   font-family:var(--font-title);
-  font-weight:700;
-  font-size:clamp(1rem,2vw,1.4rem);
-  line-height:1.2;
-  color:var(--black);
-  margin-bottom:0.3rem;
-}
-
-.about-location{
-  font-size:0.7rem;
-  color:var(--gray);
-  letter-spacing:0.05em;
-  margin-bottom:2rem;
-}
-
-.about-bio{
-  font-size:0.92rem;
-  line-height:1.8;
-  color:rgba(0,0,0,0.65);
-  margin-bottom:2rem;
-}
-
-.about-skills{
-  display:flex;
-  flex-wrap:wrap;
-  gap:0.4rem;
-  margin-bottom:2rem;
-}
-
-.about-skill{
-  font-size:0.58rem;
-  letter-spacing:0.12em;
+  font-weight:500;
+  font-size:clamp(2.6rem,5.5vw,5rem);
+  line-height:0.95;
+  letter-spacing:-0.02em;
   text-transform:uppercase;
-  font-weight:700;
-  color:var(--black);
-  background:var(--yellow);
-  padding:0.35rem 0.9rem;
+  color:#fff;
+  margin-bottom:1.75rem;
 }
 
-.about-credits{
-  border-top:1px solid rgba(0,0,0,0.06);
-  padding-top:1.5rem;
-}
-
-.about-credits-label{
+#sobre .about-bio{
+  font-family:'PP Neue Montreal',sans-serif;
   font-weight:400;
-  font-size:0.58rem;
-  letter-spacing:0.25em;
-  text-transform:uppercase;
-  color:rgba(0,0,0,0.3);
-  margin-bottom:1rem;
+  font-size:16px;
+  line-height:1.6;
+  letter-spacing:-0.1px;
+  text-transform:none;
+  color:rgba(255,255,255,0.85);
+  margin-bottom:1.1rem;
 }
 
-.about-credit-item{
-  margin-bottom:0.6rem;
-}
-
-.about-credit-title{
-  font-weight:700;
-  font-size:0.72rem;
-  color:var(--black);
-  font-style:italic;
-}
-
-.about-credit-role{
-  font-size:0.62rem;
-  color:var(--gray);
-  margin-top:0.1rem;
-  letter-spacing:0.02em;
+#sobre .about-bio strong{
+  font-weight:500;
+  color:#fff;
 }
 
 /* ═══════════════ CONTACTO ═══════════════ */
@@ -1124,15 +1098,6 @@ footer{
   color:rgba(255,255,255,0.25);
 }
 
-.about-bio{
-  font-family:'PP Neue Montreal',sans-serif;
-  font-weight:400;
-  font-size:16px;
-  line-height:1.75;
-  letter-spacing:-0.3px;
-  color:rgba(0,0,0,0.65);
-  margin-bottom:1.5rem;
-}
 
 /* ═══════════════ MOBILE ═══════════════ */
 #mobile-header{
@@ -1216,8 +1181,8 @@ footer{
   .proj-layout{grid-template-columns:1fr;gap:0;}
   .proj-left{position:static;}
   .proj-carousel .video-container{height:50vh;}
-  #sobre{grid-template-columns:1fr;}
-  .about-text{border-left:none;border-top:1px solid rgba(0,0,0,0.06);}
+  #sobre{grid-template-columns:1fr;gap:2.5rem;padding:3.5rem 1.5rem;}
+  .about-photos{width:min(100%, 20rem);}
   #contacto{grid-template-columns:1fr;}
   .contact-right{display:none;}
   .hero-text{left:1.5rem;bottom:2rem;}
@@ -1351,46 +1316,26 @@ footer{
   <section id="sobre">
     <div class="about-photos" id="about-photos">
       <div class="about-photos-slide active">
-        <img src="img/WORK-2.jpeg" alt="Luisa Espinosa">
+        <img src="img/about-4.jpg" alt="Luisa Espinosa">
       </div>
       <div class="about-photos-slide">
-        <img src="img/WORK-1.jpeg" alt="Luisa Espinosa">
+        <img src="img/about-5.jpg" alt="Luisa Espinosa">
       </div>
       <div class="about-photos-slide">
-        <img src="img/urban-g-6.png" alt="Luisa Espinosa">
+        <img src="img/about-3.jpg" alt="Luisa Espinosa">
+      </div>
+      <div class="about-photos-slide">
+        <img src="img/about-6.jpg" alt="Luisa Espinosa">
       </div>
     </div>
     <div class="about-text">
-      <div>
-        <p class="about-label">( Sobre mí )</p>
-        <p class="about-title">Creative Producer for Fashion,<br>Culture & Digital Storytelling</p>
-        <p class="about-location">Barcelona, España</p>
-        <p class="about-bio">Luisa Espinosa (Pereira, Colombia, 1998) creció dibujando, pintando y fotografiando. Esa inquietud por el universo visual la llevó a estudiar comunicación audiovisual en Colombia y más tarde escritura de guion en Barcelona — no como un plan, sino siguiendo la curiosidad.</p>
-        <p class="about-bio">Por el camino descubrió que su lugar no estaba en un solo rol. Tiene la visión de una filmmaker, la narrativa de una guionista y la estructura de una productora. No sigue un método. Sigue la curiosidad.</p>
-        <div class="about-skills">
-          <span class="about-skill">Concepto creativo</span>
-          <span class="about-skill">Guion</span>
-          <span class="about-skill">Producción</span>
-          <span class="about-skill">Dirección de rodaje</span>
-          <span class="about-skill">Postproducción</span>
-          <span class="about-skill">Estrategia de redes</span>
-        </div>
-      </div>
-      <div class="about-credits">
-        <p class="about-credits-label">Créditos televisión</p>
-        <div class="about-credit-item">
-          <p class="about-credit-title">La mariposa verde</p>
-          <p class="about-credit-role">Productora de campo · Asistente de producción</p>
-        </div>
-        <div class="about-credit-item">
-          <p class="about-credit-title">Detrás del fotógrafo</p>
-          <p class="about-credit-role">Asistente de producción · Asistente de guion</p>
-        </div>
-        <div class="about-credit-item">
-          <p class="about-credit-title">Tiempos aquellos</p>
-          <p class="about-credit-role">Asistente de arte y vestuario</p>
-        </div>
-      </div>
+      <h2 class="about-name">Luisa<br>Espinosa</h2>
+      <p class="about-bio"><strong>Creative Producer for Fashion, Culture &amp; Digital Storytelling</strong>, nacida en Pereira, Colombia (1998) y basada en Barcelona.</p>
+      <p class="about-bio">Creció dibujando, pintando y fotografiando. Esa inquietud por el universo visual la llevó a estudiar comunicación audiovisual en Colombia y más tarde escritura de guion en Barcelona — no como un plan, sino siguiendo la curiosidad.</p>
+      <p class="about-bio">Tiene la visión de una filmmaker, la narrativa de una guionista y la estructura de una productora.</p>
+      <p class="about-bio">Concepto creativo · Guion · Producción · Dirección de rodaje · Postproducción · Estrategia de redes.</p>
+      <p class="about-bio">Ha trabajado con Radiant Watches &amp; Jewels, HLGNS, Café de la Guaca y más.</p>
+      <p class="about-bio">Televisión: La mariposa verde (productora de campo), Detrás del fotógrafo (asistente de producción y guion) y Tiempos aquellos (arte y vestuario).</p>
     </div>
   </section>
 
@@ -1653,6 +1598,53 @@ const lazyVideoObserver = new IntersectionObserver((entries) => {
   });
 }, { rootMargin: '600px 0px' });
 
+/* Portadas: Vimeo da la miniatura de cada vídeo (también de los ocultos con
+   hash) vía oEmbed; se pide al tamaño justo para el ratio del clip. */
+const vimeoThumbCache = {};
+function vimeoThumb(clip) {
+  const key = `${clip.id}/${clip.h}`;
+  if (!vimeoThumbCache[key]) {
+    const url = encodeURIComponent(`https://vimeo.com/${clip.id}/${clip.h}`);
+    vimeoThumbCache[key] = fetch(`https://vimeo.com/api/oembed.json?url=${url}`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => {
+        const w = ratioToNumber(clip.ratio) < 1 ? 540 : 1280;
+        const h = Math.round(w / ratioToNumber(clip.ratio));
+        return d.thumbnail_url.replace(/-d_[^?]*/, `-d_${w}x${h}`);
+      })
+      .catch(() => null);
+  }
+  return vimeoThumbCache[key];
+}
+
+function makePoster(clip) {
+  const img = document.createElement('img');
+  img.className = 'video-poster';
+  img.alt = '';
+  if (clip.type === 'youtube') {
+    img.src = clip.thumb || `https://i.ytimg.com/vi/${clip.id}/hqdefault.jpg`;
+  } else if (clip.type === 'vimeo') {
+    vimeoThumb(clip).then(url => { if (url) img.src = url; else img.remove(); });
+  }
+  return img;
+}
+
+/* Oculta la portada cuando el vídeo empieza a reproducirse de verdad
+   (Vimeo avisa con 'playing'; YouTube no, así que se espera un poco tras cargar) */
+function hidePosterWhenPlaying(iframe, poster, clip) {
+  const hide = () => poster.classList.add('is-hidden');
+  iframe.addEventListener('load', () => {
+    if (clip.type === 'vimeo' && window.Vimeo) {
+      try {
+        new Vimeo.Player(iframe).on('playing', hide);
+        setTimeout(hide, 8000);
+        return;
+      } catch (e) { /* cae al temporizador */ }
+    }
+    setTimeout(hide, 1500);
+  }, { once: true });
+}
+
 /* YouTube: iframe con autoplay silenciado (lazy — ver lazyVideoObserver) */
 function makeYouTubeIframe(id, extraParams='') {
   const iframe = document.createElement('iframe');
@@ -1683,10 +1675,17 @@ function makeVideoCard({ clip, project, onClick, playHint = false }) {
     iframe.allow = 'autoplay; fullscreen; picture-in-picture';
     iframe.allowFullscreen = true;
     container.appendChild(iframe);
+    const poster = makePoster(clip);
+    container.appendChild(poster);
+    hidePosterWhenPlaying(iframe, poster, clip);
     lazyVideoObserver.observe(container);
   } else if (clip.type === 'youtube') {
     const extra = clip.extraParams || '';
-    container.appendChild(makeYouTubeIframe(clip.id, extra));
+    const iframe = makeYouTubeIframe(clip.id, extra);
+    container.appendChild(iframe);
+    const poster = makePoster(clip);
+    container.appendChild(poster);
+    hidePosterWhenPlaying(iframe, poster, clip);
     lazyVideoObserver.observe(container);
   } else if (clip.type === 'link' && clip.thumb) {
     const img = document.createElement('img');
@@ -1882,8 +1881,11 @@ function openVideoModal(clip) {
   iframe.src = url;
   iframe.allow = 'autoplay; fullscreen; picture-in-picture';
   iframe.allowFullscreen = true;
+  const poster = makePoster(clip);
+  hidePosterWhenPlaying(iframe, poster, clip);
   frame.innerHTML = '';
   frame.appendChild(iframe);
+  frame.appendChild(poster);
   document.getElementById('video-modal').classList.add('open');
 }
 
@@ -1976,6 +1978,15 @@ function toggleMobile() {
 function closeMobile() {
   document.getElementById('mobile-menu').classList.remove('open');
 }
+
+/* Menú lateral / móvil: si hay un proyecto o un vídeo abierto, se cierra
+   antes de saltar a la sección, para que el enlace lleve a donde debe */
+document.querySelectorAll('#sidebar a[href^="#"], #mobile-menu a[href^="#"]').forEach(a => {
+  a.addEventListener('click', () => {
+    if (document.getElementById('video-modal').classList.contains('open')) closeVideoModal();
+    if (document.getElementById('project-overlay').classList.contains('open')) closeProject();
+  });
+});
 
 // Keyboard: ESC closes overlays
 document.addEventListener('keydown', e => {
