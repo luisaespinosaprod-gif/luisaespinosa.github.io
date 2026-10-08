@@ -1,0 +1,4 @@
+# Vídeos pesados: se sirven desde Vimeo/YouTube, no desde el repo
+img/*.mp4
+!img/HEADER PORTFOLIO 09_2026.mp4
+.DS_Store

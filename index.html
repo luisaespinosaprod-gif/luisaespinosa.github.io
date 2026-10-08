@@ -700,13 +700,104 @@ body::after{
 
 .proj-carousel .video-card{
   flex:0 0 auto;
-  cursor:default;
 }
 
 .proj-carousel .video-container{
   width:auto;
   height:75vh;
 }
+
+/* Piezas horizontales (p. ej. el videoclip de HLGNS): ocupan todo el ancho
+   de la columna y se ven completas, sin scroll lateral ni recorte */
+.proj-carousel .video-card.is-wide{
+  flex:1 1 100%;
+}
+
+.proj-carousel .video-card.is-wide .video-container{
+  width:100%;
+  height:auto;
+}
+
+.video-container.no-crop iframe{
+  width:100%;
+  height:100%;
+}
+
+/* Icono de play al pasar el ratón: indica que el vídeo se abre con sonido */
+.video-play-hint{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.25);
+  opacity:0;
+  transition:opacity 0.3s;
+  z-index:2;
+  pointer-events:none;
+}
+
+.video-play-hint::before{
+  content:'';
+  width:0;height:0;
+  border-style:solid;
+  border-width:18px 0 18px 30px;
+  border-color:transparent transparent transparent #fff;
+  margin-left:6px;
+}
+
+.video-card:hover .video-play-hint{opacity:1;}
+
+@media (hover: none) {
+  .video-play-hint{opacity:1;background:none;}
+  .video-play-hint::before{border-width:12px 0 12px 20px;opacity:0.85;}
+}
+
+/* ═══════════════ REPRODUCTOR (lightbox con sonido) ═══════════════ */
+#video-modal{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background:rgba(0,0,0,0.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:3.5rem 1rem 1rem;
+}
+
+#video-modal.open{display:flex;}
+
+.video-modal-frame{
+  --r: 0.5625;
+  aspect-ratio: var(--r);
+  width:min(100%, calc((100vh - 5rem) * var(--r)));
+  width:min(100%, calc((100dvh - 5rem) * var(--r)));
+  background:#000;
+}
+
+.video-modal-frame iframe{
+  width:100%;
+  height:100%;
+  border:none;
+  display:block;
+}
+
+.video-modal-close{
+  position:absolute;
+  top:1rem;
+  right:1.25rem;
+  background:none;
+  border:none;
+  color:#fff;
+  font-weight:700;
+  font-size:0.65rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  cursor:pointer;
+  padding:0.5rem;
+}
+
+.video-modal-close:hover{opacity:0.5;}
 
 /* ═══════════════ CONTENIDO ═══════════════ */
 .contenido-grid{
@@ -1342,6 +1433,12 @@ footer{
 
 </main>
 
+<!-- REPRODUCTOR CON SONIDO -->
+<div id="video-modal" onclick="if (event.target === this) closeVideoModal()">
+  <button class="video-modal-close" onclick="closeVideoModal()">Cerrar ✕</button>
+  <div class="video-modal-frame" id="video-modal-frame"></div>
+</div>
+
 <!-- PROJECT OVERLAY -->
 <div id="project-overlay">
   <div class="proj-back">
@@ -1569,7 +1666,7 @@ function makeYouTubeIframe(id, extraParams='') {
    makeVideoCard — Estructura .video-card / .video-container
    Implementa la técnica wrapper zoom para relleno perfecto 3:4 sin barras
    ═══════════════════════════════════════ */
-function makeVideoCard({ clip, project, onClick }) {
+function makeVideoCard({ clip, project, onClick, playHint = false }) {
   const card = document.createElement('div');
   card.className = 'video-card';
   if (onClick) card.onclick = onClick;
@@ -1602,6 +1699,13 @@ function makeVideoCard({ clip, project, onClick }) {
     badge.className = 'video-platform-badge';
     badge.textContent = clip.platform || '';
     container.appendChild(badge);
+  }
+
+  // Icono de play (vídeos que se abren en el reproductor con sonido)
+  if (playHint) {
+    const hint = document.createElement('div');
+    hint.className = 'video-play-hint';
+    container.appendChild(hint);
   }
 
   // Overlay hover con nombre
@@ -1691,13 +1795,15 @@ function buildContenido() {
   grid.className = 'videos-grid';
 
   CONTENIDO_ITEMS.forEach(ci => {
-    const onClickFn = ci.type === 'link'
+    const isLink = ci.type === 'link';
+    const onClickFn = isLink
       ? () => window.open(ci.href, '_blank')
-      : null;
+      : () => openVideoModal(ci);
     const card = makeVideoCard({
       clip: ci,
       project: null,
-      onClick: onClickFn
+      onClick: onClickFn,
+      playHint: !isLink
     });
     card.querySelector('.video-container').style.aspectRatio = ci.ratio;
     grid.appendChild(card);
@@ -1732,13 +1838,58 @@ function openProject(id) {
   const carousel = document.getElementById('pj-carousel');
   carousel.innerHTML = '';
   p.clips.forEach(clip => {
-    const card = makeVideoCard({ clip, project: null, onClick: null });
-    card.querySelector('.video-container').style.aspectRatio = clip.ratio;
+    const card = makeVideoCard({
+      clip,
+      project: null,
+      onClick: () => openVideoModal(clip),
+      playHint: true
+    });
+    const container = card.querySelector('.video-container');
+    container.style.aspectRatio = clip.ratio;
+    if (ratioToNumber(clip.ratio) > 1) {
+      card.classList.add('is-wide');
+      container.classList.add('no-crop');
+    }
     carousel.appendChild(card);
   });
 
   document.getElementById('project-overlay').classList.add('open');
   document.getElementById('project-overlay').scrollTop = 0;
+}
+
+/* ═══════════════════════════════════════
+   REPRODUCTOR CON SONIDO
+   Al clicar un vídeo se abre a pantalla completa con controles y audio.
+   El iframe se crea en el propio clic para que el navegador permita el
+   autoplay con sonido; al cerrar se elimina y el audio se detiene.
+   ═══════════════════════════════════════ */
+function playerUrl(clip) {
+  if (clip.type === 'vimeo') {
+    return `https://player.vimeo.com/video/${clip.id}?h=${clip.h}&autoplay=1&muted=0&controls=1&title=0&byline=0&portrait=0&playsinline=1`;
+  }
+  if (clip.type === 'youtube') {
+    return `https://www.youtube.com/embed/${clip.id}?autoplay=1&controls=1&rel=0&playsinline=1${clip.extraParams || ''}`;
+  }
+  return null;
+}
+
+function openVideoModal(clip) {
+  const url = playerUrl(clip);
+  if (!url) return;
+  const frame = document.getElementById('video-modal-frame');
+  frame.style.setProperty('--r', ratioToNumber(clip.ratio));
+  const iframe = document.createElement('iframe');
+  iframe.src = url;
+  iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+  iframe.allowFullscreen = true;
+  frame.innerHTML = '';
+  frame.appendChild(iframe);
+  document.getElementById('video-modal').classList.add('open');
+}
+
+function closeVideoModal() {
+  document.getElementById('video-modal').classList.remove('open');
+  document.getElementById('video-modal-frame').innerHTML = '';
 }
 
 function closeProject() {
@@ -1828,7 +1979,10 @@ function closeMobile() {
 
 // Keyboard: ESC closes overlays
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('video-modal').classList.contains('open')) {
+    closeVideoModal();
+  } else {
     closeProject();
   }
 });
